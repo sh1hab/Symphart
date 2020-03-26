@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+{#    <h1>My name is {{ "Shihab" }}</h1>#}
+
+    <table class="table-auto items-center justify-between ">
+        <thead>
+        <tr>
+            <th class="px-4 py-2">Domain</th>
+            <th class="px-4 py-2">Email/Phone</th>
+            <th class="px-4 py-2">Password</th>
+            <th class="px-4 py-2">Status</th>
+            <th class="">Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for account in accounts %}
+            <tr>
+                <td class="border px-4 py-2">{{ account.domain }}</td>
+                <td class="border px-4 py-2">{{ account.EmailOrPhone }}</td>
+                <td class="border px-4 py-2">{{ account.password }}</td>
+                <td class="border px-4 py-2">{{ account.status }}</td>
+                <td class="border px-4 py-2">
+                    <a href="">Edit</a>
+                    <a href="">Delete</a>
+
+                </td>
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+{% endblock %}  
