@@ -32,6 +32,13 @@ class AccountsController extends AbstractController{
         return $this->render('accounts/index.html.twig',['accounts'=>$accounts] );
     }
 
+    /**
+     * @Route("/show/{id?}")
+     * @param $id
+     * @Method("GET")
+     * @return Response
+     */
+
     function show($id){
         $account=$this->getDoctrine()->getRepository(Table1::class)->find($id);
 

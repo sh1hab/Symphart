@@ -3,9 +3,8 @@
 {% block title %}Articles{% endblock %}
 
 {% block body %}
-{#    <h1>My name is {{ "Shihab" }}</h1>#}
 
-    <table class="table-auto items-center justify-between ">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th class="px-4 py-2">Domain</th>
@@ -24,8 +23,8 @@
                 <td class="border px-4 py-2">{{ account.password }}</td>
                 <td class="border px-4 py-2">{{ account.status }}</td>
                 <td class="border px-4 py-2">
-                    <a href="">Edit</a>
-                    <a href="">Delete</a>
+                    <a href="btn btn-info">Edit</a>
+                    <a href="btn btn-danger">Delete</a>
 
                 </td>
             </tr>
