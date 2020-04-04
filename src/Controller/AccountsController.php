@@ -12,6 +12,10 @@ use App\Entity\Table1;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @Route("/account", name="")
+ */
+
 class AccountsController extends AbstractController{
 
     protected $entityManager;
@@ -22,7 +26,7 @@ class AccountsController extends AbstractController{
     }
 
     /**
-     * @Route("/")
+     * @Route("/", name="admin_account")
      * @Method("GET")
      */
 
@@ -33,20 +37,42 @@ class AccountsController extends AbstractController{
     }
 
     /**
-     * @Route("/show/{id?}")
+     * @Route("/create", name="admin_account_new")
+     * @Method("GET")
+     */
+
+    public function create(){
+        $repository =   $this->getDoctrine()->getRepository(Table1::class);
+        $accounts   =   $repository->findAll();
+        return $this->render('accounts/index.html.twig',['accounts'=>$accounts] );
+    }
+
+    /**
+     * @Route("/show/{id?}", name="admin_account_details")
      * @param $id
      * @Method("GET")
      * @return Response
      */
 
     function show($id){
-        $account=$this->getDoctrine()->getRepository(Table1::class)->find($id);
+        $account    =   $this->getDoctrine()->getRepository(Table1::class)->find($id);
 
         if( !$account ){
             throw $this->createNotFoundException('No Account found for id '.$id);
         }
 
-        return new Response('');
+        return $this->render( 'accounts/show.html.twig',[ 'account'=>$account ] );
+
+        // return new Response( implode( (array)dump( $account ) ) );
+    }
+
+    /**
+     * @Route("/edit/{id?}", name="admin_account_edit")
+     */
+
+
+    public function edit($id){
+
     }
 
     function update($id){
