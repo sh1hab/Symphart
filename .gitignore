@@ -23,3 +23,6 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 composer.lock
 composer.lock
+package-lock.json
+symfony.lock
+.idea/vcs.xml
