@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use ProxyManager\Autoloader\Autoloader;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Table1;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Form\Form1Type;
 
 /**
  * @Route("/account", name="")
@@ -42,9 +44,13 @@ class AccountsController extends AbstractController{
      */
 
     public function create(){
-        $repository =   $this->getDoctrine()->getRepository(Table1::class);
-        $accounts   =   $repository->findAll();
-        return $this->render('accounts/index.html.twig',['accounts'=>$accounts] );
+
+        $table1 =   new Table1();
+        $form   =   $this->createForm(Form1Type::class, $table1);
+        return $this->render('accounts/create.html.twig',
+            ['form' =>  $form->createView() ]
+        );
+        
     }
 
     /**
@@ -77,6 +83,27 @@ class AccountsController extends AbstractController{
 
     function update($id){
 //        $repository =
+    }
+
+    /**
+     * @Route("/delete/{id}",name="route_admin_account_delete")
+     * @param $id
+     * @return JsonResponse
+     */
+
+    function delete($id){
+        try {
+            $manager=$this->getDoctrine()->getManager();
+            $account=$manager->getRepository(Table1::class)->find($id);
+            $manager->remove($account);
+            $manager->flush();
+
+            return $this->json(['message'=>'success','status'=>200]);
+        }catch (\ErrorException $e){
+            return new JsonResponse(array('message' => $e->getMessage()));
+        }
+
+
     }
 
     public function createAccount(ValidatorInterface $validator){
