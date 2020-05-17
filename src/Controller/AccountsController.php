@@ -13,7 +13,8 @@ use App\Entity\Table1;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Form\Form1Type;
-
+use Psr\Log\LoggerInterface;
+use App\Service\MessageGenerator;
 /**
  * @Route("/account", name="")
  */
@@ -120,7 +121,17 @@ class AccountsController extends AbstractController{
        $entityManager->flush();
 
        return new Response('Saved  new Account with id'.$account->id );
+    }
 
+    /**
+     * @Route("/logcheck")
+     * @Method("GET")
+     * @return Response
+     */
+    public function logCheck(LoggerInterface $logger, MessageGenerator $messageGenerator){
+        $logger->info("look! i just used a service ");
+        $messages = $messageGenerator->getHappyMessage();
+        return new Response( $messages );
     }
         
 
