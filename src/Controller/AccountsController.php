@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Form\Form1Type;
 use Psr\Log\LoggerInterface;
 use App\Service\MessageGenerator;
+use App\Updates\SiteUpdateManager;
+
 /**
  * @Route("/account", name="")
  */
@@ -76,8 +78,6 @@ class AccountsController extends AbstractController{
     /**
      * @Route("/edit/{id?}", name="admin_account_edit")
      */
-
-
     public function edit($id){
 
     }
@@ -91,7 +91,6 @@ class AccountsController extends AbstractController{
      * @param $id
      * @return JsonResponse
      */
-
     function delete($id){
         try {
             $manager=$this->getDoctrine()->getManager();
@@ -103,8 +102,6 @@ class AccountsController extends AbstractController{
         }catch (\ErrorException $e){
             return new JsonResponse(array('message' => $e->getMessage()));
         }
-
-
     }
 
     public function createAccount(ValidatorInterface $validator){
@@ -128,11 +125,10 @@ class AccountsController extends AbstractController{
      * @Method("GET")
      * @return Response
      */
-    public function logCheck(LoggerInterface $logger, MessageGenerator $messageGenerator){
-        $logger->info("look! i just used a service ");
-        $messages = $messageGenerator->getHappyMessage();
-        return new Response( $messages );
+    public function logCheck(SiteUpdateManager $siteUpdateManager){
+        if( $siteUpdateManager->notifyOfSiteUpdate() ){
+            return new Response( "message send" );
+        }
+        return new Response( "no message send" );
     }
-        
-
 }
